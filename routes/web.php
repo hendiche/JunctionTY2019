@@ -17,6 +17,10 @@ Route::get('/', function () {
 
 Route::resource('input', 'InputController');
 
+Route::post('test','InputController@test');
+
+Route::get('nutrition', 'InputController@getNutrition');
+
 Route::get('/food_lists', function () {
 	return view('FoodList');
 })->name('foodLists');
