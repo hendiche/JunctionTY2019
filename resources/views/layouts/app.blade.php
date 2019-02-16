@@ -26,6 +26,5 @@
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     @stack('pageScript')
-    @stack('modal')
 </body>
 </html>
