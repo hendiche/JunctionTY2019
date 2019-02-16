@@ -2,9 +2,14 @@
 
 namespace App\Http\Controllers;
 
+# Includes the autoloader for libraries installed with composer
+//require __DIR__ . '/vendor/autoload.php';
+
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
+use Google\Cloud\Storage\StorageClient;
 
 
 class InputController extends Controller
@@ -46,51 +51,68 @@ class InputController extends Controller
         //store the user's input to local storage
         Storage::disk('local')->put('allergy.txt', $request->getBody());
         dd($request->getBody());
+
+    }
+
+    public function testPost(){
+        return view('testview');
     }
 
     /**
-     * Display the specified resource.
+     * Upload a file.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param string $bucketName the name of your Google Cloud bucket.
+     * @param string $objectName the name of the object.
+     * @param string $source the path to the file to upload.
+     *
+     * @return Psr\Http\Message\StreamInterface
      */
-    public function show($id)
+    function upload_object($bucketName, $objectName, $source)
     {
-        //
+        try{
 
+            # Your Google Cloud Platform project ID
+            $projectId = 'project-junction';
+
+            $storagePath = storage_path('app/public');
+            # Instantiates a client
+            $storage = new StorageClient([
+                'projectId' => $projectId,
+                'keyFilePath' => $storagePath . '/Project Junction-d6d6e7d64091.json'
+            ]);
+
+            # The name for the new bucket
+            $bucketName = 'junctiontokyo2019';
+
+
+            $file = fopen($source, 'r');
+            $bucket = $storage->bucket($bucketName);
+            $object = $bucket->upload($file, [
+                'name' => $objectName
+            ]);
+            printf('Uploaded %s to gs://%s/%s' . PHP_EOL, basename($source), $bucketName, $objectName);
+
+        }catch(Exception $err){
+            echo 'upload error' . $err->getMessage();
+        }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function uploadImage(Request $request)
     {
-        //
+        if($request->hasFile('input_img')){
+            $image = $request->file('input_img');
+
+            $name = time().'.'.$image->getClientOriginalExtension();
+            $destinationPath = public_path('/images');
+            //Storage::disk('local')->put($name, $image);
+            $image->move($destinationPath, $name);
+
+
+            //upload to google cloud
+            $this->upload_object('junctiontokyo2019', $name, $destinationPath.'/'.$name);
+        // return back()->with('success','Image Uploaded successfully');
+        
+        }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
 }
