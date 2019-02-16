@@ -145,7 +145,13 @@ class InputController extends Controller
           'X-RapidAPI-Key' => 'fce84bdd65msh9340789ab474c49p170d1ajsn3b7244498eac']]);
 
         if($response->getStatusCode() == 200){
-            return json_decode($response->getBody()->getContents());
+            $contents = json_decode($response->getBody()->getContents());
+            $recipeArrayID=[];
+            $recipes = $contents->results;
+            foreach ($recipes as $recipe) {
+              array_push($recipeArrayID, $recipe->id);
+            }
+            return $recipeArrayID;
         }else{ 
             return null;
         }
