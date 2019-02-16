@@ -97,6 +97,16 @@ class InputController extends Controller
             $labels = $this->get_annotation($bucketName, $objectName);
 
             //for each label check with get recipe
+            $recipeArray = [];
+            foreach ($labels as $label) {
+
+                $recipe = $this->getRecipeList($label);      
+                if($recipe != null){
+                    array_push($recipeArray, $recipe);
+                }          
+            }
+
+            dd($recipeArray);
         }catch(Exception $err){
             echo 'upload error' . $err->getMessage();
         }
@@ -125,19 +135,22 @@ class InputController extends Controller
         }
     }
 
-    public function getRecipeList(Request $request)
+    //public function getRecipeList(Request $request)
+    public function getRecipeList($title)
     {
-        $title = request('title');
+        //$title = request('title');
         
         $client = new client();
-        $response = $client->request('GET', 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?number=10&offset=0&query='.$title, ['headers' => [
+        $response = $client->request('GET', 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?number=10&offset=0&query='. $title, ['headers' => [
           'X-RapidAPI-Key' => 'fce84bdd65msh9340789ab474c49p170d1ajsn3b7244498eac']]);
 
         if($response->getStatusCode() == 200){
-            $recipes = json_decode($response->getBody()->getContents());
+            return json_decode($response->getBody()->getContents());
+        }else{ 
+            return null;
         }
-      
-        dd($recipes);
+    
+        //dd($recipes);
     }
 
     public function getNutrition(Request $request) {
