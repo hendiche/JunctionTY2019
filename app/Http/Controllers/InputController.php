@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use GuzzleHttp\Client;
 use Google\Cloud\Storage\StorageClient;
+use Google\Cloud\Vision\V1\ImageAnnotatorClient;
 
 
 class InputController extends Controller
@@ -92,9 +93,19 @@ class InputController extends Controller
             ]);
             printf('Uploaded %s to gs://%s/%s' . PHP_EOL, basename($source), $bucketName, $objectName);
 
+            $this->make_public($bucketName, $object, $objectName);
+            $labels = $this->get_annotation($bucketName, $objectName);
+
+            //for each label check with get recipe
         }catch(Exception $err){
             echo 'upload error' . $err->getMessage();
         }
+    }
+
+    function make_public($bucketName, $object, $objectName)
+    {
+        $object->update(['acl' => []], ['predefinedAcl' => 'PUBLICREAD']);
+        printf('gs://%s/%s is now public' . PHP_EOL, $bucketName, $objectName);
     }
 
     public function uploadImage(Request $request)
@@ -111,7 +122,6 @@ class InputController extends Controller
             //upload to google cloud
             $this->upload_object('junctiontokyo2019', $name, $destinationPath.'/'.$name);
         // return back()->with('success','Image Uploaded successfully');
-        
         }
     }
 
@@ -142,4 +152,27 @@ class InputController extends Controller
       }
       dd($nutritions);
     }
+
+    public function get_annotation($bucketName, $objectName){
+
+        $requests = '{"requests":[{
+                    "features": [{"type": "LABEL_DETECTION"}
+                    ],"image": {"source": {
+                        "imageUri": "gs://' . $bucketName . '/' . $objectName . '"}}}]}';
+
+        $client = new client();
+        $response = $client->request('POST', 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyDHv3uDdcJxUtBawPTqZ1ZrWDi_nbiugrM', ['body' => $requests]);
+
+        $labels = json_decode($response->getBody()->getContents())->responses[0]->labelAnnotations;
+
+        if ($labels) {
+            echo("Labels:" . PHP_EOL);
+            foreach ($labels as $label) {
+                echo($label->description . PHP_EOL);
+            }
+            return $labels;
+        } else {
+            echo('No label found' . PHP_EOL);
+        }
+            }
 }
