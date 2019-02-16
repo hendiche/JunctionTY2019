@@ -21,12 +21,11 @@
 </head>
 <body>
     <div id="app">
-        <main class="py-4">
-            @yield('content')
-        </main>
+        @yield('content')
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
     @stack('pageScript')
+    @stack('modal')
 </body>
 </html>
