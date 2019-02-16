@@ -115,4 +115,31 @@ class InputController extends Controller
         }
     }
 
+    public function getRecipeList(Request $request)
+    {
+        $title = request('title');
+        
+        $client = new client();
+        $response = $client->request('GET', 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?number=10&offset=0&query='.$title, ['headers' => [
+          'X-RapidAPI-Key' => 'fce84bdd65msh9340789ab474c49p170d1ajsn3b7244498eac']]);
+
+        if($response->getStatusCode() == 200){
+            $recipes = json_decode($response->getBody()->getContents());
+        }
+      
+        dd($recipes);
+    }
+
+    public function getNutrition(Request $request) {
+      $menu = "pizza";
+
+      $client = new client();
+      $response = $client->request('GET','https://nutritionix-api.p.rapidapi.com/v1_1/search/'.$menu.'?fields=*', 
+        ['headers' => ['X-RapidAPI-Key' => 'fce84bdd65msh9340789ab474c49p170d1ajsn3b7244498eac']]);
+
+      if($response->getStatusCode() == 200) {
+        $nutritions = json_decode($response->getBody()->getContents());
+      }
+      dd($nutritions);
+    }
 }
