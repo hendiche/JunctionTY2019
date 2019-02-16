@@ -16,3 +16,11 @@ Route::get('/', function () {
 });
 
 Route::resource('input', 'InputController');
+
+Route::get('/food_lists', function () {
+	return view('FoodList');
+})->name('foodLists');
+
+Route::get('/food_details/{food_id}', function () {
+	return view('FoodDetails');
+})->name('foodDetails');
