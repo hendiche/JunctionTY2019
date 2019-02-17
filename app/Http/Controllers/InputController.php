@@ -200,5 +200,47 @@ class InputController extends Controller
         } else {
             echo('No label found' . PHP_EOL);
         }
-            }
+    }
+
+    public function get_othersoures($title) {
+      $client = new client();
+      $response = $client->request('GET','https://contextualwebsearch-websearch-v1.p.rapidapi.com/api/Search/WebSearchAPI?autoCorrect=true&pageNumber=1&pageSize=10&q='.$title.'&safeSearch=false', 
+        ['headers' => ['X-RapidAPI-Key' => 'fce84bdd65msh9340789ab474c49p170d1ajsn3b7244498eac']]);
+
+      if($response->getStatusCode() == 200) {
+        $contents = json_decode($response->getBody()->getContents());
+          $related_links_list=[];
+          $related_links = $contents->value;
+          foreach ($related_links as $related_link) {
+            array_push($related_links_list, $related_link->url);
+          }
+        return $related_links_list;
+      }else{
+        return null;
+      }
+    }
+
+    public function get_latest_news(Request $request) {
+      $title = request('title');
+      $client = new client();
+      $response = $client->request('GET','https://microsoft-azure-bing-news-search-v1.p.rapidapi.com/search?q='.$title, 
+        ['headers' => ['X-RapidAPI-Key' => 'fce84bdd65msh9340789ab474c49p170d1ajsn3b7244498eac']]);
+
+      if ($response->getStatusCode() == 200) {
+        $contents = json_decode($response->getBody()->getContents());
+          $latest_news_list=[];
+          $latest_news = $contents->value;
+          foreach ($latest_news as $latest_new) {
+            $newdata =  array (
+              'title' => $latest_new->name,
+              'link' => $latest_new->url,
+              'published_date' => $latest_new->datePublished
+            );
+            $latest_news_list["latest_news"][] = $newdata;
+          }
+        return $latest_news_list;
+      }else{
+        return null;
+      }
+    }
 }
