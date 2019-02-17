@@ -15,13 +15,11 @@ class FrontEndController extends Controller
         if($response->getStatusCode() == 200){
             $allergens = json_decode($response->getBody()->getContents())->items;
         }
-        //send list of allergens to frontend
-        // dd($allergens);
+        
     	return view('home')->with('allergens', $allergens);
     }
 
     public function foodListPage() {
-    	dd(Session::get('data');
     	return view('FoodList')->with('foodLists', Session::get('data'));
     }
 }

@@ -17,14 +17,34 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+    <style type="text/css">
+        .header {
+            background-color: #FECB6E;
+            height: 100px;
+        }
+    </style>
     @stack('pageStyle')
 </head>
 <body>
     <div id="app">
+        <div class="header">
+            <div class="container-fluid">
+                <div class="row justify-content-md-center">
+                    <div class="col-xl-7 col-12">
+                        <center><img src="{{ asset('images/saifood.png') }}" width="100" height="100"></center>
+                    </div>
+                </div>
+            </div>
+        </div>
         @yield('content')
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+
+        });
+    </script>
     @stack('pageScript')
 </body>
 </html>

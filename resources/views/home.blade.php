@@ -4,10 +4,6 @@
 
 @push('pageStyle')
 <style type="text/css">
-    .header {
-        background-color: #FECB6E;
-        height: 100px;
-    }
     .btn.btn-outline-warning {
         color: #FD9941;
         border-color: #FD9941;
@@ -22,15 +18,6 @@
 @endpush
 
 @section('content')
-<div class="header">
-    <div class="container-fluid">
-        <div class="row justify-content-md-center">
-            <div class="col-xl-7 col-12">
-                <center><img src="{{ asset('images/saifood.png') }}" width="100" height="100"></center>
-            </div>
-        </div>
-    </div>
-</div>
 <div class="container mt-3">
     <div class="row justify-content-md-center">
         <div class="col-xl-7 col-12 d-flex justify-content-around">
