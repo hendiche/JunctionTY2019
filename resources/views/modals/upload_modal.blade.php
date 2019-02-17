@@ -1,7 +1,7 @@
 <div id="upload-picture-modal" class="modal modal-danger fade" tabindex="-1" role="dialog" aria-labelledby="custom-width-modalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog">
         <div class="modal-content">
-            {!! Form::open(['url' => '', 'id' => 'reset_confirmation']) !!}
+            {!! Form::open(['url' => route('upload'), 'enctype' => 'multipart/form-data']) !!}
             <div class="modal-header">
                 <h4 class="modal-title text-center" id="custom-width-modalLabel">Upload Image</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button> 
@@ -12,7 +12,7 @@
                         <label class="custom-file-label">Choose file: 
                             <span id="file-name"></span>
                         </label>
-                        {!! Form::file('file', ['class' => 'custom-file-input', 'onchange' => 'loadFile(event)']) !!}
+                        {!! Form::file('input_img', ['class' => 'custom-file-input', 'onchange' => 'loadFile(event)']) !!}
                     </div>
                 </div>
                 <div class="item form-group">

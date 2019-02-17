@@ -22,6 +22,8 @@ class InputController extends Controller
      */
     public function index()
     {
+        // CHANGED TO FRONTENDCONTROLLER@HOMEPAGE
+
          $client = new Client(['base_uri' => 'http://www.mocky.io/v2/']);
          $response = $client->request('GET', '5c67eb6b3800002615b100ff');
         if($response->getStatusCode() == 200){
@@ -36,7 +38,7 @@ class InputController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function show()
     {
         //
     }

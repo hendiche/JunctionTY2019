@@ -11,9 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', 'FrontEndController@homePage');
 //input fields
 Route::resource('input', 'InputController');
 Route::post('/upload_photo', 'InputController@uploadImage')->name('upload');

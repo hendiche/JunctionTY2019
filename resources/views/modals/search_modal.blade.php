@@ -9,7 +9,7 @@
             <div class="modal-body">
             	<div class="form-group">
 	            	<label>Allergens</label>
-	            	{!! Form::select('size', [], null, ['placeholder' => 'Select a Allergen', 'class' => 'form-control']) !!}
+	            	{!! Form::select('size', $allergens, null, ['placeholder' => 'Select a Allergen', 'class' => 'form-control']) !!}
             	</div>
             	<div class="form-group">
 	            	<label>Type the name of food that you want to know about</label>
