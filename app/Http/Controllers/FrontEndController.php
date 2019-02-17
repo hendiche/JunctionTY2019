@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use GuzzleHttp\Client;
+use Session;
 
 
 class FrontEndController extends Controller
@@ -17,5 +18,10 @@ class FrontEndController extends Controller
         //send list of allergens to frontend
         // dd($allergens);
     	return view('home')->with('allergens', $allergens);
+    }
+
+    public function foodListPage() {
+    	dd(Session::get('data');
+    	return view('FoodList')->with('foodLists', Session::get('data'));
     }
 }

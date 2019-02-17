@@ -112,6 +112,7 @@ class InputController extends Controller
 
             //save recipie IDs
             session(['recipeIds' => $recipeIds]);
+            return $recipeArray;
 
         }catch(Exception $err){
             echo 'upload error' . $err->getMessage();
@@ -136,8 +137,8 @@ class InputController extends Controller
 
 
             //upload to google cloud
-            $this->upload_object('junctiontokyo2019', $name, $destinationPath.'/'.$name);
-        // return back()->with('success','Image Uploaded successfully');
+            $recipeDatas = $this->upload_object('junctiontokyo2019', $name, $destinationPath.'/'.$name);
+            return redirect()->action('FrontEndController@foodListPage')->with(['data' => $recipeDatas]);
         }
     }
 
@@ -156,8 +157,6 @@ class InputController extends Controller
         }else{ 
             return null;
         }
-    
-        //dd($recipes);
     }
 
     public function getNutrition($menu) {

@@ -21,9 +21,7 @@ Route::get('testing','InputController@testPost');
 
 Route::get('nutrition', 'InputController@getNutrition');
 
-Route::get('/food_lists', function () {
-	return view('FoodList');
-})->name('foodLists');
+Route::get('/food_lists', 'FrontEndController@foodListPage')->name('foodLists');
 
 Route::get('/food_details/{food_id}', function () {
 	return view('FoodDetails');
