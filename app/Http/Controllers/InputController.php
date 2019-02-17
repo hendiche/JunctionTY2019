@@ -150,12 +150,14 @@ class InputController extends Controller
             $contents = json_decode($response->getBody()->getContents());
             $recipeArrayID=[];
             $recipes = $contents->results;
-            return $recipes[0];
+            if(sizeof($recipes) > 0){
+              return {"recipe": $recipes[0], "baseURL": $contents->baseUri};
+            }else{
+              return null;
+            }
         }else{ 
             return null;
         }
-    
-        //dd($recipes);
     }
 
     public function getNutrition($menu) {
