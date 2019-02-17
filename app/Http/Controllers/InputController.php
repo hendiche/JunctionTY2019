@@ -105,8 +105,9 @@ class InputController extends Controller
 
                 $recipe = $this->getRecipeList($label->description);      
                 if($recipe != null){
+                    dd($recipe);
                     array_push($recipeArray, $recipe);
-                    array_push($recipeIds, $recipe->id);
+                    //array_push($recipeIds, $recipe->id);
                 }          
             }
 
@@ -153,7 +154,15 @@ class InputController extends Controller
             $contents = json_decode($response->getBody()->getContents());
             $recipeArrayID=[];
             $recipes = $contents->results;
-            return $recipes[0];
+            if(sizeof($recipes) > 0){
+              $rec = new class{};
+              $rec->recipe = $recipes[0]; 
+              $rec->baseURL= $contents->baseUri;
+
+              return $rec;
+            }else{
+              return null;
+            }
         }else{ 
             return null;
         }

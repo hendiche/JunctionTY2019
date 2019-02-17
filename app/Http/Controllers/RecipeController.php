@@ -13,25 +13,7 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        //
-        //get list of ids from local storage/ session
-
-        $recipeIds = session('recipeIds');
-        dd($recipeIds);
-        $fullRecipes = [];
-        foreach ($recipeIds as $recipeId) {
-            $fullRecipe = $this->findFullRecipe($recipeId);
-            if($fullRecipe != null){
-                array_push($fullRecipes, $fullRecipe);
-            }
-        }
-    }
-
-    private function findFullRecipe($recipeId){
-        
-        //replace recipe name spaces with cross
-        $recipeName = str_replace(" ", "+", $recipeName);
-
+        $recipeId = 43215;
         $client = new client();
         $response = $client->request('GET','https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/' . $recipeId . '/information', 
         ['headers' => ['X-RapidAPI-Key' => 'fce84bdd65msh9340789ab474c49p170d1ajsn3b7244498eac']]);
@@ -41,6 +23,12 @@ class RecipeController extends Controller
         }else{
             return null;
         }
+    }
+
+    //private function findFullRecipe($recipeId){
+        
+        //replace recipe name spaces with cross
+        //$recipeName = str_replace(" ", "+", $recipeName);
 
         // $client = new client();
         // $response = $client->request('GET','https://edamam-edamam-nutrition-analysis.p.rapidapi.com/api/nutrition-data?ingr='.$menu.'?fields=*', 
@@ -50,7 +38,7 @@ class RecipeController extends Controller
         //     $nutritions = json_decode($response->getBody()->getContents());
         // }
         //dd($nutritions);
-    }
+    //}
 
     /**
      * Show the form for creating a new resource.
