@@ -98,15 +98,19 @@ class InputController extends Controller
 
             //for each label check with get recipe
             $recipeArray = [];
+            $recipeIds = [];
             foreach ($labels as $label) {
 
-                $recipe = $this->getRecipeList($label);      
+                $recipe = $this->getRecipeList($label->description);      
                 if($recipe != null){
                     array_push($recipeArray, $recipe);
+                    array_push($recipeIds, $recipe->id);
                 }          
             }
 
-            dd($recipeArray);
+            //save recipie IDs
+            session(['recipeIds' => $recipeIds]);
+
         }catch(Exception $err){
             echo 'upload error' . $err->getMessage();
         }
@@ -138,8 +142,6 @@ class InputController extends Controller
     //public function getRecipeList(Request $request)
     public function getRecipeList($title)
     {
-        //$title = request('title');
-        
         $client = new client();
         $response = $client->request('GET', 'https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/search?number=10&offset=0&query='. $title, ['headers' => [
           'X-RapidAPI-Key' => 'fce84bdd65msh9340789ab474c49p170d1ajsn3b7244498eac']]);
@@ -148,10 +150,7 @@ class InputController extends Controller
             $contents = json_decode($response->getBody()->getContents());
             $recipeArrayID=[];
             $recipes = $contents->results;
-            foreach ($recipes as $recipe) {
-              array_push($recipeArrayID, $recipe->id);
-            }
-            return $recipeArrayID;
+            return $recipes[0];
         }else{ 
             return null;
         }
@@ -159,8 +158,9 @@ class InputController extends Controller
         //dd($recipes);
     }
 
-    public function getNutrition(Request $request) {
-      $menu = "pizza";
+    public function getNutrition($menu) {
+
+      $menu = str_replace(" ", "+", $menu);
 
       $client = new client();
       $response = $client->request('GET','https://nutritionix-api.p.rapidapi.com/v1_1/search/'.$menu.'?fields=*', 
@@ -169,7 +169,7 @@ class InputController extends Controller
       if($response->getStatusCode() == 200) {
         $nutritions = json_decode($response->getBody()->getContents());
       }
-      dd($nutritions);
+      
     }
 
     public function get_annotation($bucketName, $objectName){
