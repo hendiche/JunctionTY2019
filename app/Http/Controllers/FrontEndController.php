@@ -15,7 +15,7 @@ class FrontEndController extends Controller
         if($response->getStatusCode() == 200){
             $allergens = json_decode($response->getBody()->getContents())->items;
         }
-        
+
     	return view('home')->with('allergens', $allergens);
     }
 

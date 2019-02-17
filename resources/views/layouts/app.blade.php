@@ -31,7 +31,11 @@
             <div class="container-fluid">
                 <div class="row justify-content-md-center">
                     <div class="col-xl-7 col-12">
-                        <center><img src="{{ asset('images/saifood.png') }}" width="100" height="100"></center>
+                        <center>
+                            <a href="{{ route('home') }}">
+                                <img src="{{ asset('images/saifood.png') }}" width="100" height="100">
+                            </a>
+                        </center>
                     </div>
                 </div>
             </div>

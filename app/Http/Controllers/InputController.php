@@ -178,6 +178,8 @@ class InputController extends Controller
 
       if($response->getStatusCode() == 200) {
         $nutritions = json_decode($response->getBody()->getContents());
+        $related_links = $this->get_othersoures($menu);
+        return view('FoodDetails')->with('foodDetails', $nutritions)->with('relatedLinks', $related_links);
       }
       
     }

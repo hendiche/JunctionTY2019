@@ -26,9 +26,8 @@
 	<div class="row justify-content-md-center">
 		<div class="col-xl-7 col-12" id="foodLists">
 			@foreach ($foodLists as $item)
-				
 				<div class="card mb-3 JTY-card-link">
-					<a href="{{ route('foodDetails', ['food_id' => $item['recipe']->id]) }}">
+					<a href="{{ route('foodDetails', ['food_name' => $item['recipe']->title]) }}">
 						<div class="row">
 						    <div class="col-md-4">
 						        <img src="{{ sizeof($item['recipe']->imageUrls) > 0 ? $item['baseURL'].$item['recipe']->image : 'http://www.mkanez-qs.com/public/41646D696E6973747261746F72Images/noImage.png' }}" class="card-img" alt="...">

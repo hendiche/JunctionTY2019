@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('/', 'FrontEndController@homePage');
+Route::get('/', 'FrontEndController@homePage')->name('home');
 //input fields
 Route::resource('input', 'InputController');
 Route::post('/upload_photo', 'InputController@uploadImage')->name('upload');
@@ -19,10 +19,6 @@ Route::post('/upload_photo', 'InputController@uploadImage')->name('upload');
 Route::post('test','InputController@test');
 Route::get('testing','InputController@testPost');
 
-Route::get('nutrition', 'InputController@getNutrition');
-
 Route::get('/food_lists', 'FrontEndController@foodListPage')->name('foodLists');
 
-Route::get('/food_details/{food_id}', function () {
-	return view('FoodDetails');
-})->name('foodDetails');
+Route::get('/food_details/{food_name}', 'InputController@getNutrition')->name('foodDetails');
