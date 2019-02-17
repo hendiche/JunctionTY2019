@@ -103,8 +103,9 @@ class InputController extends Controller
 
                 $recipe = $this->getRecipeList($label->description);      
                 if($recipe != null){
+                    dd($recipe);
                     array_push($recipeArray, $recipe);
-                    array_push($recipeIds, $recipe->id);
+                    //array_push($recipeIds, $recipe->id);
                 }          
             }
 
@@ -151,7 +152,11 @@ class InputController extends Controller
             $recipeArrayID=[];
             $recipes = $contents->results;
             if(sizeof($recipes) > 0){
-              return {"recipe": $recipes[0], "baseURL": $contents->baseUri};
+              $rec = new class{};
+              $rec->recipe = $recipes[0]; 
+              $rec->baseURL= $contents->baseUri;
+
+              return $rec;
             }else{
               return null;
             }
